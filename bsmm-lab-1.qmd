@@ -20,6 +20,11 @@ install.packages('Lahman')
 library(Lahman)
 ```
 
+```{r}
+install.packages("tidyverse")
+library(tidyverse)
+```
+
 ## Exercises
 
 ### Exercise 1
@@ -28,7 +33,7 @@ library(Lahman)
 dplyr::glimpse(Teams)
 ```
 
-The `Teams` dataset has \_\_\_ observations and \_\_\_ variables.
+The `Teams` dataset has 3015 observations and 48 variables.
 
 ### Exercise 2
 
@@ -45,15 +50,36 @@ my_mets |>
 
 ### Exercise 3
 
-...
+```{r}
+mets_ben <- Teams |>
+  dplyr::select(yearID, G, teamID,R, RA, W, L) |>
+  dplyr::filter(teamID == "NYN" & yearID %in% 2004:2012)
+mets_ben
+```
+
+```{r}
+mets_ben <- mets_ben |>
+  dplyr::rename(RS= R)    # new name = old name
+mets_ben
+```
 
 ### Exercise 4
 
-...
+```{r}
+mets_ben <- mets_ben |>
+  dplyr::mutate(WPct = 1 / (1 + (RA / RS) * 2))
+mets_ben <- mets_ben |>
+  dplyr::mutate(W_hat =WPct*G)
+mets_ben
+```
 
 ### Exercise 5
 
-...
+```{r}
+mets_ben <- mets_ben |>
+ dplyr:: mutate(Performance = ifelse(W > W_hat, "Better", "Worse"))
+mets_ben
+```
 
 ### Exercise 6
 
